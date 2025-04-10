@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 import requests
 import pandas as pd
@@ -6,11 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 import calendar
 
-API_URL = (
-    os.getenv("PROD_API_URL")
-    if os.getenv("ENV") == "PROD"
-    else "http://localhost:8000"
-)
+API_URL = "https://expense-management-system-dt4h.onrender.com"
 
 def analytics_by_month_tab():
     st.subheader("Expense Breakdown By Month")

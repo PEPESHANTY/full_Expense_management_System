@@ -4,12 +4,13 @@ from datetime import datetime
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
+from dotenv import load_dotenv
 
-API_URL = (
-    os.getenv("PROD_API_URL")
-    if os.getenv("ENV") == "PROD"
-    else "http://localhost:8000"
-)
+load_dotenv()
+
+API_URL = "https://expense-management-system-dt4h.onrender.com"
+    # if os.getenv("ENV") == "PROD"
+    # else "http://localhost:8000"
 
 def analytics_tab():
     col1, col2 = st.columns(2)
