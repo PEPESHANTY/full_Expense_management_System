@@ -9,12 +9,27 @@ load_dotenv()
 
 @contextmanager
 def get_db_cursor(commit=False):
-    connection = mysql.connector.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database=os.getenv("DB_NAME")
-    )
+    env = os.getenv("ENV")
+
+    if env == "DEV":
+        db_config = {
+            "host": os.getenv("DEV_DB_HOST"),
+            "user": os.getenv("DEV_DB_USER"),
+            "password": os.getenv("DEV_DB_PASSWORD"),
+            "database": os.getenv("DEV_DB_NAME"),
+            "port": int(os.getenv("DEV_DB_PORT")),
+        }
+    elif env == "PROD":
+        db_config = {
+            "host": os.getenv("PROD_DB_HOST"),
+            "user": os.getenv("PROD_DB_USER"),
+            "password": os.getenv("PROD_DB_PASSWORD"),
+            "database": os.getenv("PROD_DB_NAME"),
+            "port": int(os.getenv("PROD_DB_PORT")),
+        }
+
+    # ✅ FIX: Define the connection here
+    connection = mysql.connector.connect(db_config)
 
     cursor = connection.cursor(dictionary=True)
     yield cursor
