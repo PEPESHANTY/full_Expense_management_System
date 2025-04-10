@@ -80,19 +80,24 @@ st.markdown("""
         bottom: 55px;
         right: 20px;
         font-size: 15px;
-        color: #eee;
+        font-weight: 500;
+        color: #f5f5f5;
         z-index: 999;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding: 6px 10px;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.3);
     }
 
     .github-footer a {
         text-decoration: none;
-        font-weight: bold;
+        font-weight: 600;
         color: #90caf9;
     }
 
     .github-footer a:hover {
         text-decoration: underline;
-        color: #fff;
+        color: #ffffff;
     }
     </style>
 
@@ -100,6 +105,7 @@ st.markdown("""
         👨‍💻 Created by <a href="https://github.com/PEPESHANTY" target="_blank">Shantanu Bhute</a>
     </div>
 """, unsafe_allow_html=True)
+
 
 
 # App content
