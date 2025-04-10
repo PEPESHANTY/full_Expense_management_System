@@ -17,7 +17,7 @@ def get_db_cursor(commit=False):
             "user": os.getenv("DEV_DB_USER"),
             "password": os.getenv("DEV_DB_PASSWORD"),
             "database": os.getenv("DEV_DB_NAME"),
-            "port": int(os.getenv("DEV_DB_PORT")),
+            "port": os.getenv("DEV_DB_PORT"),
         }
     elif env == "PROD":
         db_config = {
@@ -25,11 +25,11 @@ def get_db_cursor(commit=False):
             "user": os.getenv("PROD_DB_USER"),
             "password": os.getenv("PROD_DB_PASSWORD"),
             "database": os.getenv("PROD_DB_NAME"),
-            "port": int(os.getenv("PROD_DB_PORT")),
+            "port": os.getenv("PROD_DB_PORT"),
         }
 
     # ✅ FIX: Define the connection here
-    connection = mysql.connector.connect(db_config)
+    connection = mysql.connector.connect(**db_config)
 
     cursor = connection.cursor(dictionary=True)
     yield cursor
