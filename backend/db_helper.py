@@ -12,6 +12,7 @@ def get_db_cursor(commit=False):
     env = os.getenv("ENV")
 
     if env == "DEV":
+        print("Dev inside")
         db_config = {
             "host": os.getenv("DEV_DB_HOST"),
             "user": os.getenv("DEV_DB_USER"),
@@ -19,7 +20,9 @@ def get_db_cursor(commit=False):
             "database": os.getenv("DEV_DB_NAME"),
             "port": os.getenv("DEV_DB_PORT"),
         }
+
     elif env == "PROD":
+        print("Prod inside")
         db_config = {
             "host": os.getenv("PROD_DB_HOST"),
             "user": os.getenv("PROD_DB_USER"),
@@ -29,6 +32,7 @@ def get_db_cursor(commit=False):
         }
 
     # ✅ FIX: Define the connection here
+
     connection = mysql.connector.connect(**db_config)
 
     cursor = connection.cursor(dictionary=True)
