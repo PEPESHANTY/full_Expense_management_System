@@ -77,7 +77,7 @@ st.markdown("""
     <style>
     .github-footer {
         position: fixed;
-        bottom: 60px;
+        bottom: 55px;
         right: 20px;
         font-size: 15px;
         color: #eee;
