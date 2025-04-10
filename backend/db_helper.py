@@ -17,8 +17,7 @@ def get_db_cursor(commit=False):
             "host": os.getenv("DEV_DB_HOST"),
             "user": os.getenv("DEV_DB_USER"),
             "password": os.getenv("DEV_DB_PASSWORD"),
-            "database": os.getenv("DEV_DB_NAME"),
-            "port": os.getenv("DEV_DB_PORT"),
+            "database": os.getenv("DEV_DB_NAME")
         }
 
     elif env == "PROD":
@@ -27,8 +26,7 @@ def get_db_cursor(commit=False):
             "host": os.getenv("PROD_DB_HOST"),
             "user": os.getenv("PROD_DB_USER"),
             "password": os.getenv("PROD_DB_PASSWORD"),
-            "database": os.getenv("PROD_DB_NAME"),
-            "port": os.getenv("PROD_DB_PORT"),
+            "database": os.getenv("PROD_DB_NAME")
         }
 
     # ✅ FIX: Define the connection here

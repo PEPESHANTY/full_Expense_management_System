@@ -315,3 +315,6 @@
 2025-04-10 17:36:35,507 - db_helper - INFO - fetch_monthly_expense_summary called
 2025-04-10 17:37:07,456 - db_helper - INFO - fetch_monthly_expense_summary called
 2025-04-10 17:37:15,546 - db_helper - INFO - fetch_monthly_expense_summary called
+2025-04-10 17:42:02,369 - db_helper - INFO - fetch_monthly_expense_summary called
+2025-04-10 17:42:20,472 - db_helper - INFO - fetch_monthly_expense_summary called
+2025-04-10 17:42:59,604 - db_helper - INFO - fetch_monthly_expense_summary called
