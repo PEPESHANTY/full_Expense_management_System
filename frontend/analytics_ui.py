@@ -1,10 +1,15 @@
+import os
 import streamlit as st
 from datetime import datetime
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 
-API_URL = "http://localhost:8000"
+API_URL = (
+    os.getenv("PROD_API_URL")
+    if os.getenv("ENV") == "PROD"
+    else "http://localhost:8000"
+)
 
 def analytics_tab():
     col1, col2 = st.columns(2)

@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import requests
 import pandas as pd
@@ -5,7 +6,11 @@ import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 import calendar
 
-API_URL = "http://localhost:8000"
+API_URL = (
+    os.getenv("PROD_API_URL")
+    if os.getenv("ENV") == "PROD"
+    else "http://localhost:8000"
+)
 
 def analytics_by_month_tab():
     st.subheader("Expense Breakdown By Month")

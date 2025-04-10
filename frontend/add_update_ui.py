@@ -1,8 +1,13 @@
+import os
 import streamlit as st
 from datetime import datetime
 import requests
 
-API_URL= "https://expense-management-system-dt4h.onrender.com"
+API_URL = (
+    os.getenv("PROD_API_URL")
+    if os.getenv("ENV") == "PROD"
+    else "http://localhost:8000"
+)
 
 def add_update_tab():
     selected_date = st.date_input("Enter Date", datetime(2024, 8, 1), label_visibility="collapsed")
