@@ -50,14 +50,19 @@ def verify_otp(data: OTPVerify):
 @router.post("/login")
 def login(user: UserLogin):
     with get_db_cursor() as cursor:
-        cursor.execute("SELECT id, password_hash FROM users WHERE email = %s", (user.email,))
+        # First: Check if the user exists
+        cursor.execute("SELECT id, password_hash FROM users WHERE email = %s", (user.email.lower(),))
         row = cursor.fetchone()
 
-        if row and verify_password(user.password, row["password_hash"]):
-            return {"message": "Login successful", "user_id": row["id"]}
+        if not row:
+            raise HTTPException(status_code=404, detail="User not found")
 
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+        # Then: Check if password is correct
+        if not verify_password(user.password, row["password_hash"]):
+            raise HTTPException(status_code=401, detail="Incorrect password")
 
+        # Success: Return ID
+        return {"message": "Login successful", "user_id": row["id"]}
 
 @router.get("/user_id/{email}")
 async def get_user_id(email: str):

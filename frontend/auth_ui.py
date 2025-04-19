@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-API_URL = "https://full-expense-management-system.onrender.com"  #os.getenv("API_URL", "http://127.0.0.1:8000")  # fallback to local
+API_URL = "https://full-expense-management-system.onrender.com"
 
-
+# API_URL =  os.getenv("API_URL", "http://127.0.0.1:8000")
 def auth_ui():
     # st.markdown("### 🔐 Expense Management System")
 
@@ -20,7 +20,7 @@ def auth_ui():
     else:
         st.subheader("🆕 Sign Up")
 
-    email = st.text_input("Email")
+    email = st.text_input("Email").strip().lower()
     password = st.text_input("Password", type="password")
 
     if st.session_state.auth_mode == "login":
@@ -34,7 +34,7 @@ def auth_ui():
                     st.success("Login successful!")
                     st.rerun()
                 elif res.status_code == 404:
-                    st.error("🚫 It seems you are my sister **Sanajana** working as a Senior test Engineering👩🏻‍💻 in SailPoint🚢⚈.  \n Please sign up first 🙇🏻.  \n Fun Fact: Sanjana👧🏻 loves Elephant🐘 !!")
+                    st.error("You don't have an account !!  \n 🚫 It seems you are my sister **Sanajana** working as a Senior test Engineering👩🏻‍💻 in SailPoint🚢⚈.  \n Please sign up first 🙇🏻.  \n Fun Fact: Sanjana👧🏻 loves Elephant🐘 !!")
                 elif res.status_code == 401:
                     st.error("🔑 Incorrect password. Please try again.")
                 elif res.status_code == 422:
@@ -51,7 +51,7 @@ def auth_ui():
                 "<div style='text-align:right; margin-right:10px;'>"
                 "New user? <a href='#' onClick=\"window.parent.postMessage({type: 'streamlit:setComponentValue', key: 'auth_mode', value: 'signup'}, '*')\">Register now</a>"
                 "</div>",
-                unsafe_allow_html=True,
+                unsafe_allow_html=True
             )
         col1, col2 = st.columns([8, 1.8])
         with col2:

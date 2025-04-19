@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 import calendar
 import os
 
-API_URL = "https://full-expense-management-system.onrender.com"   #os.getenv("API_URL", "http://127.0.0.1:8000")
+API_URL = "https://full-expense-management-system.onrender.com"
+
+# API_URL =  os.getenv("API_URL", "http://127.0.0.1:8000")
 
 def analytics_by_month_tab():
     st.subheader("Expense Breakdown By Month")
