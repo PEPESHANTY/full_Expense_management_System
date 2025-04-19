@@ -4,15 +4,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 import calendar
+import os
 
-API_URL = "https://expense-management-system-dt4h.onrender.com"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 
 def analytics_by_month_tab():
     st.subheader("Expense Breakdown By Month")
 
     try:
         # Fetch data from API
-        response = requests.get(f"{API_URL}/analytics_by_month")
+        response = requests.get(f"{API_URL}/analytics_by_month/{st.session_state['user_id']}")
         if response.status_code == 200:
             data = response.json()
             df = pd.DataFrame(data)

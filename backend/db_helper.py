@@ -1,8 +1,9 @@
-import os
-import mysql.connector
 from contextlib import contextmanager
-from logging_setup import setup_logger
+
+import mysql.connector
 from dotenv import load_dotenv
+
+from logging_setup import setup_logger
 
 logger = setup_logger('db_helper')
 load_dotenv()
@@ -40,67 +41,94 @@ def get_db_cursor(commit=False):
     cursor.close()
     connection.close()
 
-
-def fetch_expenses_for_date(expense_date):
-    logger.info(f"fetch_expenses_for_date called with {expense_date}")
+def fetch_expenses_for_date(user_id, expense_date):
+    logger.info(f"Fetching expenses for user {user_id} on {expense_date}")
     with get_db_cursor() as cursor:
-        cursor.execute("SELECT * FROM expenses WHERE expense_date = %s", (expense_date,))
-        expenses = cursor.fetchall()
-        return expenses
+        cursor.execute(
+            "SELECT amount, category, notes FROM expenses WHERE user_id = %s AND expense_date = %s",
+            (user_id, expense_date)
+        )
+        return cursor.fetchall()
 
 
-def delete_expenses_for_date(expense_date):
-    logger.info(f"delete_expenses_for_date called with {expense_date}")
-    with get_db_cursor(commit=True) as cursor:
-        cursor.execute("DELETE FROM expenses WHERE expense_date = %s", (expense_date,))
-
-
-def insert_expense(expense_date, amount, category, notes):
-    logger.info(f"insert_expense called with date: {expense_date}, amount: {amount}, category: {category}, notes: {notes}")
+def delete_expenses_for_date(user_id, expense_date):
+    logger.info(f"Deleting expenses for user {user_id} on {expense_date}")
     with get_db_cursor(commit=True) as cursor:
         cursor.execute(
-            "INSERT INTO expenses (expense_date, amount, category, notes) VALUES (%s, %s, %s, %s)",
-            (expense_date, amount, category, notes)
+            "DELETE FROM expenses WHERE user_id = %s AND expense_date = %s",
+            (user_id, expense_date)
         )
 
 
-def fetch_expense_summary(start_date, end_date):
-    logger.info(f"fetch_expense_summary called with start: {start_date} end: {end_date}")
-    with get_db_cursor() as cursor:
+def insert_expense(user_id, expense_date, amount, category, notes):
+    logger.info(f"Inserting expense for user {user_id} on {expense_date}")
+    with get_db_cursor(commit=True) as cursor:
         cursor.execute(
-            '''SELECT category, SUM(amount) as total 
-               FROM expenses WHERE expense_date
-               BETWEEN %s and %s  
-               GROUP BY category;''',
-            (start_date, end_date)
+            "INSERT INTO expenses (user_id, expense_date, amount, category, notes) VALUES (%s, %s, %s, %s, %s)",
+            (user_id, expense_date, amount, category, notes)
         )
-        data = cursor.fetchall()
-        return data
 
-def fetch_monthly_expense_summary():
-    logger.info("fetch_monthly_expense_summary called")
+
+def fetch_expense_summary(user_id, start_date, end_date):
+    logger.info(f"Summary from {start_date} to {end_date} for user {user_id}")
     with get_db_cursor() as cursor:
         cursor.execute(
             '''
-            SELECT DATE_FORMAT(expense_date, '%Y-%m') AS month,SUM(amount) AS total
+            SELECT category, SUM(amount) as total 
+            FROM expenses 
+            WHERE user_id = %s AND expense_date BETWEEN %s AND %s  
+            GROUP BY category;
+            ''',
+            (user_id, start_date, end_date)
+        )
+        return cursor.fetchall()
+
+
+def fetch_monthly_expense_summary(user_id):
+    logger.info(f"Monthly summary for user {user_id}")
+    with get_db_cursor() as cursor:
+        cursor.execute(
+            '''
+            SELECT DATE_FORMAT(expense_date, '%Y-%m') AS month, SUM(amount) AS total
             FROM expenses
+            WHERE user_id = %s
             GROUP BY month
             ORDER BY month ASC;
-            '''
+            ''',
+            (user_id,)
         )
-        data = cursor.fetchall()
-        return data
+        return cursor.fetchall()
+from db_helper import get_db_cursor
+
+def test_db_connection():
+    try:
+        with get_db_cursor() as cursor:
+            cursor.execute("SELECT 1;")
+            result = cursor.fetchone()
+            print("✅ Database connected successfully:", result)
+    except Exception as e:
+        print("❌ Failed to connect to the database:", str(e))
+
+
 
 
 import os
 if __name__ == "__main__":
+    test_db_connection()
+
+    insert_expense(1, "2025-04-18", 99.99, "Shopping", "Test insert from backend")
+    expenses = fetch_expenses_for_date(1, "2025-04-18")
+    print("Fetched expenses:", expenses)
+
+    delete_expenses_for_date(1, "2025-04-18")
+    print("Deleted today's expenses.")
+    # expenses = fetch_expenses_for_date("2024-09-30")
+    # print(expenses)
+    # monthly_exp = fetch_monthly_expense_summary()
+    # print(monthly_exp)
+    # # delete_expenses_for_date("2024-08-25")
+    # summary = fetch_expense_summary("2024-08-01", "2024-08-05")
+    # for record in summary:
+    #     print(record)
 
 
-    expenses = fetch_expenses_for_date("2024-09-30")
-    print(expenses)
-    monthly_exp = fetch_monthly_expense_summary()
-    print(monthly_exp)
-    # delete_expenses_for_date("2024-08-25")
-    summary = fetch_expense_summary("2024-08-01", "2024-08-05")
-    for record in summary:
-        print(record)

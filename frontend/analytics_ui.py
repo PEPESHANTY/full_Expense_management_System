@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-API_URL = "https://expense-management-system-dt4h.onrender.com"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
     # if os.getenv("ENV") == "PROD"
     # else "http://localhost:8000"
 
@@ -25,7 +25,7 @@ def analytics_tab():
             'end_date': end_date.strftime("%Y-%m-%d")
         }
 
-        response = requests.post(f"{API_URL}/analytics/", json=payload)
+        response = requests.post(f"{API_URL}/analytics/{st.session_state['user_id']}", json=payload)
         if response.status_code != 200:
             st.error("Failed to fetch data")
             return

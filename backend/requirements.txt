@@ -7,3 +7,11 @@ fastapi==0.115.12
 matplotlib==3.10.1
 python-dotenv
 uvicorn
+
+# Optional but recommended
+jinja2==3.1.3
+email-validator==2.1.1
+python-multipart==0.0.9
+
+# For sending emails (SMTP)
+smtplib3==1.0.0.post1

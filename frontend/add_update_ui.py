@@ -5,14 +5,14 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()
-API_URL = "https://expense-management-system-dt4h.onrender.com"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
     # if os.getenv("ENV") == "PROD"
     # else "http://localhost:8000"
 
 
 def add_update_tab():
     selected_date = st.date_input("Enter Date", datetime(2024, 8, 1), label_visibility="collapsed")
-    response = requests.get(f"{API_URL}/expenses/{selected_date}")
+    response = requests.get(f"{API_URL}/expenses/{st.session_state['user_id']}/{selected_date}")
     if response.status_code == 200:
         existing_expenses = response.json()
         # st.write(existing_expenses)
@@ -64,7 +64,7 @@ def add_update_tab():
         if submit_button:
             filtered_expenses = [expense for expense in expenses if expense['amount'] > 0]
 
-            requests.post(f"{API_URL}/expenses/{selected_date}", json=filtered_expenses)
+            requests.post(f"{API_URL}/expenses/{st.session_state['user_id']}/{selected_date}", json=filtered_expenses)
             if response.status_code == 200:
                 st.success("Successfully updated expenses")
             else:
