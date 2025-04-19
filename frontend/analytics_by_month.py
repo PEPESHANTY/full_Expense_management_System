@@ -16,7 +16,13 @@ def analytics_by_month_tab():
         response = requests.get(f"{API_URL}/analytics_by_month/{st.session_state['user_id']}")
         if response.status_code == 200:
             data = response.json()
+
             df = pd.DataFrame(data)
+
+            if df.empty:
+                st.warning("🚫 No expense data available for monthly analytics.")
+                return
+
             df = df.sort_values("month")
 
             # Convert '2024-08' to 'Aug 2024' for display
