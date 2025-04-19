@@ -20,6 +20,10 @@ class DateRange(BaseModel):
     start_date: date
     end_date: date
 
+@app.get("/")
+def root():
+    return {"message": "Backend is running successfully!"}
+
 # ✅ POST: Add or update expenses for a specific user
 @app.post("/expenses/{user_id}/{expense_date}")
 def add_or_update_expense(user_id: int, expense_date: date, expenses: List[Expense]):
