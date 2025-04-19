@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")  # fallback to local
+API_URL = "https://full-expense-management-system.onrender.com"  #os.getenv("API_URL", "http://127.0.0.1:8000")  # fallback to local
 
 
 def auth_ui():

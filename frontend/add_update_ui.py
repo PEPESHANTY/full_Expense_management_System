@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()
-API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+API_URL = "https://full-expense-management-system.onrender.com"  #os.getenv("API_URL", "http://127.0.0.1:8000")
     # if os.getenv("ENV") == "PROD"
     # else "http://localhost:8000"
 
