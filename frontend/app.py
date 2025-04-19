@@ -4,6 +4,12 @@ from add_update_ui import add_update_tab
 from analytics_ui import analytics_tab
 from analytics_by_month import analytics_by_month_tab
 
+st.set_page_config(
+    page_title="Expense Manager App",
+    page_icon="💸",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
 
 st.markdown("""
     <style>
