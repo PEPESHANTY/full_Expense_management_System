@@ -33,8 +33,15 @@ def auth_ui():
                     st.session_state.logged_in = True
                     st.success("Login successful!")
                     st.rerun()
+                elif res.status_code == 404:
+                    st.error("🚫 It seems you are my sister **Sanajana** working as a Senior test Engineering👩🏻‍💻 in SailPoint🚢⚈.  \n Please sign up first 🙇🏻.  \n Fun Fact: Sanjana👧🏻 loves Elephant🐘 !!")
+                elif res.status_code == 401:
+                    st.error("🔑 Incorrect password. Please try again.")
+                elif res.status_code == 422:
+                    st.error("🚫 It seems you are my sister **Sanjana** working as a Senior test Engineering👩🏻‍💻 in SailPoint🚢⚈.  \n Please sign up first 🙇🏻.  \n Fun Fact: Sanjana👧🏻 loves Elephant🐘 !!")
+
                 else:
-                    st.error("Login failed. Please check your credentials.")
+                    st.error(f"⚠️ Login failed with status code {res.status_code}. Try again.")
             except Exception as e:
                 st.error(f"Server error: {e}")
 
